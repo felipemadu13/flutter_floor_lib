@@ -1,0 +1,2 @@
+C:/Users/felip/Documents/Github/flutter_floor_lib/flutter_repository_clean-master/android/app/.cxx/Debug/641j616m/x86/CMakeFiles/edit_cache.dir
+C:/Users/felip/Documents/Github/flutter_floor_lib/flutter_repository_clean-master/android/app/.cxx/Debug/641j616m/x86/CMakeFiles/rebuild_cache.dir
