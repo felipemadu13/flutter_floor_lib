@@ -1,33 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_repository_clean/core/di/configure_providers.dart';
-import 'package:flutter_repository_clean/ui/page/movies_list_page.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_repository_clean/data/database/entity/movie_floor_database.dart';
+import 'package:flutter_repository_clean/data/repository/movie_repository_impl.dart';
+import 'package:flutter_repository_clean/data/network/client/api_client.dart';
+import 'package:flutter_repository_clean/data/network/network_mapper.dart';
 
-Future<void> main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final database = await $FloorMovieFloorDatabase.databaseBuilder('movies.db').build();
+  final movieDao = database.movieDao;
+  final apiClient = ApiClient(baseUrl: "http://10.0.2.2:3000");
+  final networkMapper = NetworkMapper();
 
-  final data = await ConfigureProviders.createDependencyTree();
+  final movieRepository = MovieRepositoryImpl(
+    movieDao: movieDao,
+    apiClient: apiClient,
+    networkMapper: networkMapper,
+  );
 
-  runApp(AppRoot(data: data));
+  runApp(MyApp(movieRepository: movieRepository));
 }
 
-class AppRoot extends StatelessWidget {
-  final ConfigureProviders data;
+class MyApp extends StatelessWidget {
+  final MovieRepositoryImpl movieRepository;
 
-  const AppRoot({super.key, required this.data});
+  MyApp({required this.movieRepository});
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: data.providers,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'The Movie Database',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: const MoviesListPage(),
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: Text('Flutter Floor Example')),
+        body: Center(child: Text('Hello, World!')),
       ),
     );
   }

@@ -1,42 +1,20 @@
-import 'package:flutter_repository_clean/data/database/dao/base_dao.dart';
-import 'package:flutter_repository_clean/data/database/entity/movie_database_entity.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:floor/floor.dart';
+import 'package:flutter_repository_clean/domain/movie.dart';
 
-class MovieDao extends BaseDao {
+@dao
+abstract class MovieDao {
+  @Query('SELECT * FROM movies')
+  Future<List<Movie>> findAllMovies();
 
+  @Query('SELECT * FROM movies WHERE id = :id')
+  Stream<Movie?> findMovieById(int id);
 
-  Future<List<MovieDatabaseEntity>> selectAll({
-    int? limit,
-    int? offset,
-  }) async {
-    final Database db = await getDb();
-    final List<Map<String, dynamic>> maps = await db.query(
-      MovieDatabaseContract.movieTable,
-      limit: limit,
-      offset: offset,
-      orderBy: '${MovieDatabaseContract.idColumn} ASC',
-    );
-    return List.generate(maps.length, (i) {
-      return MovieDatabaseEntity.fromJson(maps[i]);
-    });
-  }
+  @insert
+  Future<void> insertMovie(Movie movie);
 
-  Future<void> insert(MovieDatabaseEntity entity) async {
-    final Database db = await getDb();
-    await db.insert(MovieDatabaseContract.movieTable, entity.toJson());
-  }
+  @update
+  Future<void> updateMovie(Movie movie);
 
-  Future<void> insertAll(List<MovieDatabaseEntity> entities) async {
-    final Database db = await getDb();
-    await db.transaction((transaction) async {
-      for (final entity in entities) {
-        transaction.insert(MovieDatabaseContract.movieTable, entity.toJson());
-      }
-    });
-  }
-
-  Future<void> deleteAll() async {
-    final Database db = await getDb();
-    await db.delete(MovieDatabaseContract.movieTable);
-  }
+  @delete
+  Future<void> deleteMovie(Movie movie);
 }

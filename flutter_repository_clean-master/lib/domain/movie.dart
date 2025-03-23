@@ -1,13 +1,13 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:floor/floor.dart';
 
-part 'movie.freezed.dart';
+@Entity(tableName: 'movies')
+class Movie {
+  @PrimaryKey(autoGenerate: true)
+  final int? id;
+  final String title;
+  final int year;
+  final String? imgUrl;
+  final String? extract;
 
-@freezed
-class Movie with _$Movie {
-  const factory Movie({
-    required String title,
-    required int year,
-    String? extract,
-    String? imgUrl,
-  }) = _Movie;
+  Movie({this.id, required this.title, required this.year, this.imgUrl, this.extract});
 }

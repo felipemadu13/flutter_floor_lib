@@ -1,50 +1,23 @@
-import 'package:flutter_repository_clean/data/database/entity/movie_database_entity.dart';
-import 'package:flutter_repository_clean/domain/exception/mapper_exception.dart';
 import 'package:flutter_repository_clean/domain/movie.dart';
 
-
-class DatabaseMapper{
-
-  Movie toMovie(MovieDatabaseEntity entity){
-    try{
-      return Movie(
-          title: entity.title,
-          year: entity.year,
-          extract: entity.extract,
-          imgUrl: entity.imageUrl
-      );
-    }catch (e){
-      throw MapperException<MovieDatabaseEntity, Movie>(e.toString());
-    }
+class DatabaseMapper {
+  List<Movie> toMovies(List<Movie> entities) {
+    return entities.map((entity) => Movie(
+      id: entity.id,
+      title: entity.title,
+      year: entity.year,
+      imgUrl: entity.imgUrl,
+      extract: entity.extract,
+    )).toList();
   }
 
-  List<Movie> toMovies(List<MovieDatabaseEntity> entities){
-    final List<Movie> movies = [];
-    for (var movieEntity in entities) {
-      movies.add(toMovie(movieEntity));
-    }
-    return movies;
-  }
-
-  MovieDatabaseEntity toMovieDatabaseEntity(Movie movie){
-    try{
-      return MovieDatabaseEntity(
-          id: null,
-          title: movie.title,
-          year: movie.year,
-          extract: movie.extract,
-          imageUrl: movie.imgUrl
-      );
-    }catch (e){
-      throw MapperException<MovieDatabaseEntity, Movie>(e.toString());
-    }
-  }
-
-  List<MovieDatabaseEntity> toMovieDatabaseEntities(List<Movie> movies){
-    final List<MovieDatabaseEntity> movieDatabaseEntities = [];
-    for (var m in movies) {
-      movieDatabaseEntities.add(toMovieDatabaseEntity(m));
-    }
-    return movieDatabaseEntities;
+  List<Movie> toMovieDatabaseEntities(List<Movie> movies) {
+    return movies.map((movie) => Movie(
+      id: movie.id,
+      title: movie.title,
+      year: movie.year,
+      imgUrl: movie.imgUrl,
+      extract: movie.extract,
+    )).toList();
   }
 }
