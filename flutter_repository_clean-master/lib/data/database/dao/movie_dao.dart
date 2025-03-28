@@ -1,20 +1,13 @@
+import 'dart:async';
+
 import 'package:floor/floor.dart';
+import 'package:flutter_repository_clean/data/database/dao/movie_dao.dart';
 import 'package:flutter_repository_clean/domain/movie.dart';
+import 'package:sqflite/sqflite.dart' as sqflite;
 
-@dao
-abstract class MovieDao {
-  @Query('SELECT * FROM movies')
-  Future<List<Movie>> findAllMovies();
+part 'movie_floor_database.g.dart';
 
-  @Query('SELECT * FROM movies WHERE id = :id')
-  Stream<Movie?> findMovieById(int id);
-
-  @insert
-  Future<void> insertMovie(Movie movie);
-
-  @update
-  Future<void> updateMovie(Movie movie);
-
-  @delete
-  Future<void> deleteMovie(Movie movie);
+@Database(version: 1, entities: [Movie])
+abstract class MovieFloorDatabase extends FloorDatabase {
+  MovieDao get movieDao;
 }

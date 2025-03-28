@@ -15,13 +15,13 @@ class MovieRepositoryImpl implements MovieRepository {
       required this.networkMapper});
 
   Future<List<Movie>> getMovies({ required int page, required int limit}) async {
-    final dbEntities = await movieDao.findAllMovies();
+    final dbEntities = await movieDao.findAllMovies(limit, (page * limit) - limit);
     if (dbEntities.isNotEmpty) {
       return dbEntities;
     }
     final networkEntity = await apiClient.getMovies(page: page, limit: limit);
-    final movies = networkMapper.toMovies(networkEntity);
-    await movieDao.insertMovie(movies as Movie);
+    final movies = networkMapper.toMovies(networkEntity).cast<Movie>();
+    await movieDao.insertMovies(movies);
     return movies;
   }
 }

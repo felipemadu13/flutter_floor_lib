@@ -1,4 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:floor/floor.dart';
+import '../../domain/movie.dart';
 
 part 'http_paged_result.g.dart';
 
@@ -10,7 +12,7 @@ class HttpPagedResult {
   int last;
   int pages;
   int items;
-  List<MovieEntity> data;
+  List<Movie> data;
 
   HttpPagedResult({
     required this.first,
@@ -26,18 +28,22 @@ class HttpPagedResult {
 }
 
 @JsonSerializable()
-class MovieEntity {
-  String title;
-  int year;
-  List<String> cast;
-  List<String> genres;
-  String? href;
-  String? extract;
-  String? thumbnail;
-  int? thumbnailWidth;
-  int? thumbnailHeight;
+@Entity(tableName: 'movies')
+class Movie {
+  @PrimaryKey(autoGenerate: true)
+  final int? id;
+  final String title;
+  final int year;
+  final List<String> cast;
+  final List<String> genres;
+  final String? href;
+  final String? extract;
+  final String? thumbnail;
+  final int? thumbnailWidth;
+  final int? thumbnailHeight;
 
-  MovieEntity({
+  Movie({
+    this.id,
     required this.title,
     required this.year,
     required this.cast,
@@ -49,10 +55,12 @@ class MovieEntity {
     this.thumbnailHeight,
   });
 
-  factory MovieEntity.fromJson(Map<String, dynamic> json) => _$MovieEntityFromJson(json);
+  factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MovieToJson(this);
 
   @override
   String toString() {
-    return 'MovieEntity{title: $title, year: $year}';
+    return 'Movie{title: $title, year: $year}';
   }
 }
