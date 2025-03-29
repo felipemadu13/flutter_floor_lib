@@ -1,13 +1,23 @@
-import 'dart:async';
-
 import 'package:floor/floor.dart';
-import 'package:flutter_repository_clean/data/database/dao/movie_dao.dart';
-import 'package:flutter_repository_clean/domain/movie.dart';
-import 'package:sqflite/sqflite.dart' as sqflite;
+import 'package:flutter_repository_clean/data/database/entity/movie.dart';
 
-part 'movie_floor_database.g.dart';
+@dao
+abstract class FloorMovieDao {
+  @Query('SELECT * FROM movies ORDER BY id ASC')
+  Future<List<Movie>> getAllMovies();
 
-@Database(version: 1, entities: [Movie])
-abstract class MovieFloorDatabase extends FloorDatabase {
-  MovieDao get movieDao;
+  @Query('SELECT * FROM movies LIMIT :limit OFFSET :offset')
+  Future<List<Movie>> getMoviesPaginated(int limit, int offset);
+
+  @Insert(onConflict: OnConflictStrategy.replace)
+  Future<void> insertMovie(Movie movie);
+
+  @Insert(onConflict: OnConflictStrategy.replace)
+  Future<void> insertMovies(List<Movie> movies);
+
+  @Query('DELETE FROM movies')
+  Future<void> deleteAllMovies();
+
+  @Query('SELECT * FROM movies WHERE id = :id')
+  Future<Movie?> getMovieById(int id);
 }

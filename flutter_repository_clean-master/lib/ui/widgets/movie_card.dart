@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/movie.dart';
+import '../../data/database/entity/movie.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;

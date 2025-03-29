@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_repository_clean/data/database/entity/movie_floor_database.dart';
+import 'package:flutter_repository_clean/data/database/movie_floor_database.dart';
 import 'package:flutter_repository_clean/data/repository/movie_repository_impl.dart';
 import 'package:flutter_repository_clean/data/network/client/api_client.dart';
 import 'package:flutter_repository_clean/data/network/network_mapper.dart';

@@ -1,4 +1,4 @@
-
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 
@@ -22,7 +22,7 @@ class ApiClient {
      );
   }
 
-  Future<List<Movie>> getMovies({int? page, int? limit}) async {
+  Future<List<MovieEntity>> getMovies({int? page, int? limit}) async {
     final response = await _dio.get(
       "/movies",
       queryParameters: {

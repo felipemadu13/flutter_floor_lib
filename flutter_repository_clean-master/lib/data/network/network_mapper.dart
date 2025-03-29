@@ -1,5 +1,5 @@
 import 'package:flutter_repository_clean/domain/exception/mapper_exception.dart';
-import 'package:flutter_repository_clean/domain/movie.dart';
+import 'package:flutter_repository_clean/data/database/entity/movie.dart';
 
 import 'entity/http_paged_result.dart';
 

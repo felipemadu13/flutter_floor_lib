@@ -1,50 +1,49 @@
 import 'package:flutter_repository_clean/data/database/entity/movie_database_entity.dart';
-import 'package:flutter_repository_clean/domain/exception/mapper_exception.dart';
-import 'package:flutter_repository_clean/domain/movie.dart';
+import 'package:flutter_repository_clean/data/database/entity/movie.dart';
+import 'package:flutter_repository_clean/domain/film.dart';
 
-
-class DatabaseMapper{
-
-  Movie toMovie(MovieDatabaseEntity entity){
-    try{
-      return Movie(
-          title: entity.title,
-          year: entity.year,
-          extract: entity.extract,
-          imgUrl: entity.imageUrl
-      );
-    }catch (e){
-      throw MapperException<MovieDatabaseEntity, Movie>(e.toString());
-    }
+class FloorMovieMapper {
+  Movie toMovie(MovieDatabaseEntity entity) {
+    return Movie(
+      title: entity.title,
+      year: entity.year,
+      extract: entity.extract,
+      imgUrl: entity.imageUrl,
+    );
   }
 
-  List<Movie> toMovies(List<MovieDatabaseEntity> entities){
-    final List<Movie> movies = [];
-    for (var movieEntity in entities) {
-      movies.add(toMovie(movieEntity));
-    }
-    return movies;
+  List<Film> toMovies(List<MovieDatabaseEntity> entities) {
+    return entities.map((entity) => Film(
+      title: entity.title,
+      year: entity.year,
+      extract: entity.extract,
+      imgUrl: entity.imageUrl,
+    )).toList();
   }
 
-  MovieDatabaseEntity toMovieDatabaseEntity(Movie movie){
-    try{
+  MovieDatabaseEntity toFloorEntity(Movie movie) {
+    return MovieDatabaseEntity(
+      id: null,
+      title: movie.title,
+      year: movie.year,
+      extract: movie.extract,
+      imageUrl: movie.imgUrl,
+    );
+  }
+
+  List<MovieDatabaseEntity> toFloorEntities(List<Movie> movies) {
+    return movies.map((movie) => toFloorEntity(movie)).toList();
+  }
+
+  List<MovieDatabaseEntity> toMovieDatabaseEntities(List<Film> movies) {
+    return movies.map((movie) {
       return MovieDatabaseEntity(
-          id: null,
-          title: movie.title,
-          year: movie.year,
-          extract: movie.extract,
-          imageUrl: movie.imgUrl
+        id: null, 
+        title: movie.title,
+        year: movie.year,
+        extract: movie.extract,
+        imageUrl: movie.imgUrl,
       );
-    }catch (e){
-      throw MapperException<MovieDatabaseEntity, Movie>(e.toString());
-    }
-  }
-
-  List<MovieDatabaseEntity> toMovieDatabaseEntities(List<Movie> movies){
-    final List<MovieDatabaseEntity> movieDatabaseEntities = [];
-    for (var m in movies) {
-      movieDatabaseEntities.add(toMovieDatabaseEntity(m));
-    }
-    return movieDatabaseEntities;
+    }).toList();
   }
 }
